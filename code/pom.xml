@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ru.javarush.fog.posts</groupId>
+	<artifactId>fibonacci</artifactId>
+	<version>1.0.0</version>
+	<description>Исходники для статьи о быстром нахождении чисел Фибоначчи</description>
+
+	<properties>
+		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+		<maven.compiler.release>20</maven.compiler.release>
+		<dependencies.junit.version>5.10.0</dependencies.junit.version>
+		<plugins.maven.compiler.version>3.11.0</plugins.maven.compiler.version>
+		<plugins.maven.surefire.version>3.1.2</plugins.maven.surefire.version>
+		<plugins.maven.dependency.version>3.6.0</plugins.maven.dependency.version>
+		<plugins.maven.jar.version>3.3.0</plugins.maven.jar.version>
+		<plugins.maven.javadoc.version>3.5.0</plugins.maven.javadoc.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${dependencies.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${plugins.maven.compiler.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${plugins.maven.surefire.version}</version>
+				<configuration>
+					<argLine>-XX:+UseParallelGC</argLine>
+					<trimStackTrace>true</trimStackTrace>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${plugins.maven.dependency.version}</version>
+				<configuration>
+					<includeScope>runtime</includeScope>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${plugins.maven.jar.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${plugins.maven.javadoc.version}</version>
+				<configuration>
+					<detectLinks>false</detectLinks>
+					<show>private</show>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
