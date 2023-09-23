@@ -37,12 +37,28 @@ public class Fibonacci {
 		final int n
 	) { // method body
 		if (n == Integer.MIN_VALUE) throw new IllegalArgumentException();
-		BigInteger answer = null; // Здесь вычисляем абсолютное значение ответа, обратившись к одному из методов.
+		BigInteger answer = fibNaive(Math.abs(n)); // Здесь вычисляем абсолютное значение ответа, обратившись к одному из методов.
 		if ((n < 0) && (n % 2 == 0)) {
 			answer = answer.negate();
 		} // if
 		return answer;
 	} // fib()
+
+	/**
+	 * Рекурсивное нахождение чисел Фибоначчи.
+	 * <p>Метод реализует рекурсивный алгоритм нахождения чисел Фибоначчи.</p>
+	 * @param n Номер числа в последовательности. Если номер отрицателен, то поведение метода не определено.
+	 * @return Значение выбранного числа Фибоначчи.
+	 */
+	private static BigInteger fibNaive (
+		final int n
+	) { // method body
+		return switch (n) {
+			case 0 -> BigInteger.ZERO;
+			case 1 -> BigInteger.ONE;
+			default -> fibNaive(n-1).add(fibNaive(n-2));
+		}; // switch
+	} // fibNaive()
 
 // constructors
 
