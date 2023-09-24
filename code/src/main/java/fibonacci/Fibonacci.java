@@ -37,7 +37,7 @@ public class Fibonacci {
 		final int n
 	) { // method body
 		if (n == Integer.MIN_VALUE) throw new IllegalArgumentException();
-		BigInteger answer = fibNaive(Math.abs(n)); // Здесь вычисляем абсолютное значение ответа, обратившись к одному из методов.
+		BigInteger answer = fibIter(Math.abs(n)); // Здесь вычисляем абсолютное значение ответа, обратившись к одному из методов.
 		if ((n < 0) && (n % 2 == 0)) {
 			answer = answer.negate();
 		} // if
@@ -59,6 +59,25 @@ public class Fibonacci {
 			default -> fibNaive(n-1).add(fibNaive(n-2));
 		}; // switch
 	} // fibNaive()
+
+	/**
+	 * Последовательное нахождение чисел Фибоначчи.
+	 * <p>Метод реализует итеративный алгоритм нахождения чисел Фибоначчи.</p>
+	 * @param n Номер числа в последовательности. Если номер отрицателен, то поведение метода не определено.
+	 * @return Значение выбранного числа Фибоначчи.
+	 */
+	private static BigInteger fibIter (
+		final int n
+	) { // method body
+		BigInteger prev = BigInteger.ONE;
+		BigInteger cur = BigInteger.ZERO;
+		for (int i = n; i > 0; i--) {
+			final BigInteger next = cur.add(prev);
+			prev = cur;
+			cur = next;
+		} // for
+		return cur;
+	} // fibIter()
 
 // constructors
 

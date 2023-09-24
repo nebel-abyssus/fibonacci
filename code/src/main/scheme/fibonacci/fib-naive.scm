@@ -1,5 +1,5 @@
 (define (fib n)
-        ((if (and (< n 0) (even? n))
+        ((if (and (negative? n) (even? n))
 	     -
 	     +) (fib-naive (abs n))))
 
