@@ -92,13 +92,13 @@ public class Fibonacci {
 
 (define (fib n)
         ((if (and (negative? n) (even? n))
-	     -
-	     +) (fib-naive (abs n))))
+             -
+             +) (fib-naive (abs n))))
 
 (define (fib-naive n)
         (cond ((= n 0) 0)
-	      ((= n 1) 1)
-	      (else (+ (fib (- n 2)) (fib (- n 1))))))
+              ((= n 1) 1)
+              (else (+ (fib (- n 2)) (fib (- n 1))))))
 
 На Java можно выразиться следующим образом:
 
@@ -136,12 +136,12 @@ f(n) = f(n-2) + f(n-1);
 
 (define (fib n)
         ((if (and (negative? n) (even? n))
-	     -
-	     +) (fib-iter 1 0 (abs n))))
+             -
+             +) (fib-iter 1 0 (abs n))))
 
 (define (fib-iter prev cur n)
         (cond ((zero? n) cur)
-	      (else (fib-iter cur (+ prev cur) (- n 1)))))
+              (else (fib-iter cur (+ prev cur) (- n 1)))))
 
 А на Java - так:
 
@@ -178,7 +178,7 @@ private static BigInteger fibIter (
 
 (define (mul a n)
         (cond ((zero? n) 0)
-	      (else (+ a (mul a (- n 1))))))
+              (else (+ a (mul a (- n 1))))))
 
 Мы можем отказаться от использования рекурсии, заменив её итерациями. Это вытекает из формулы mul(a, n) = mul(a, n-1) + a, если предположить, что к моменту совершения данного шага операции значение mul(a, n-1) уже вычислено. Выразим этот подход на Scheme:
 
@@ -187,7 +187,7 @@ private static BigInteger fibIter (
 
 (define (mul-iter val accum count)
         (cond ((zero? count) accum)
-	      (else (mul-iter val (+ accum val) (- count 1)))))
+              (else (mul-iter val (+ accum val) (- count 1)))))
 
 Вычислительная сложность обоих этих походов, в данной задаче O(n), однако итеративный подход потребляет константное количество памяти, тогда как рекурсивному требуется O(n) дополнительной памяти для хранения промежуточных результатов.
 
@@ -198,8 +198,8 @@ private static BigInteger fibIter (
 
 (define (quickMul val accum count)
         (cond ((zero? count) accum)
-	      ((even? count) (quickMul (double val) accum (/ count 2)))
-	      (else (quickMul val (+ accum val) (- count 1)))))
+              ((even? count) (quickMul (double val) accum (/ count 2)))
+              (else (quickMul val (+ accum val) (- count 1)))))
 
 (define (double a)
         (+ a a))
@@ -299,23 +299,23 @@ f(2n-1) = f(n)^2 + f(n-1)^2; (5)
 
 (define (fib n)
         (cond ((and (negative? n) (even? n)) (- (fib (abs n))))
-	      (else (qfib (abs n) (cons 1 0) (cons 0 1)))))
+              (else (qfib (abs n) (cons 1 0) (cons 0 1)))))
 
 (define (qfib n term accum)
         (cond ((zero? n) (car accum))
-	      ((even? n) (qfib (halve n) (fib-double term) accum))
-	      (else (qfib (- n 1) term (fib-sum accum term)))))
+              ((even? n) (qfib (halve n) (fib-double term) accum))
+              (else (qfib (- n 1) term (fib-sum accum term)))))
 
 (define (halve x)
         (quotient x 2))
 
 (define (fib-double x)
         (cons (* (car x) (+ (* 2 (cdr x)) (car x)))
-	      (+ (sqr (car x)) (sqr (cdr x)))))
+              (+ (sqr (car x)) (sqr (cdr x)))))
 
 (define (fib-sum a b)
         (cons (+ (* (car a) (cdr b)) (* (+ (car a) (cdr a)) (car b)))
-	      (+ (* (car a) (car b)) (* (cdr a) (cdr b)))))
+              (+ (* (car a) (car b)) (* (cdr a) (cdr b)))))
 
 (define (sqr x)
         (* x x))
