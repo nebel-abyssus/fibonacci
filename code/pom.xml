@@ -11,13 +11,13 @@
 
 	<properties>
 		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-		<maven.compiler.release>20</maven.compiler.release>
-		<dependencies.junit.version>5.10.0</dependencies.junit.version>
+		<maven.compiler.release>21</maven.compiler.release>
+		<dependencies.junit.version>5.10.1</dependencies.junit.version>
 		<plugins.maven.compiler.version>3.11.0</plugins.maven.compiler.version>
-		<plugins.maven.surefire.version>3.1.2</plugins.maven.surefire.version>
-		<plugins.maven.dependency.version>3.6.0</plugins.maven.dependency.version>
+		<plugins.maven.surefire.version>3.2.2</plugins.maven.surefire.version>
+		<plugins.maven.dependency.version>3.6.1</plugins.maven.dependency.version>
 		<plugins.maven.jar.version>3.3.0</plugins.maven.jar.version>
-		<plugins.maven.javadoc.version>3.5.0</plugins.maven.javadoc.version>
+		<plugins.maven.javadoc.version>3.6.2</plugins.maven.javadoc.version>
 	</properties>
 
 	<dependencies>
