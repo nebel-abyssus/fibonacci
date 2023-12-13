@@ -103,5 +103,4 @@ public class Fibonacci {
 		throw new NoSuchMethodError();
 	} // Fibonacci()
 
-	// todo
 } // Fibonacci
