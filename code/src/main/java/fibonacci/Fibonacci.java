@@ -37,7 +37,7 @@ public class Fibonacci {
 		final int n
 	) { // method body
 		if (n == Integer.MIN_VALUE) throw new IllegalArgumentException();
-		BigInteger answer = fibIter(Math.abs(n)); // Здесь вычисляем абсолютное значение ответа, обратившись к одному из методов.
+		BigInteger answer = qfib(Math.abs(n)); // Здесь вычисляем абсолютное значение ответа, обратившись к одному из методов.
 		if ((n < 0) && (n % 2 == 0)) {
 			answer = answer.negate();
 		} // if
@@ -78,6 +78,18 @@ public class Fibonacci {
 		} // for
 		return cur;
 	} // fibIter()
+
+	/**
+	 * Быстрое нахождение значения произвольного элемента.
+	 * <p>Метод, обращаясь к вспомогательному классу, находит за логарифмическое время и возвращает значение произвольного элемента последовательности Фибоначчи.</p>
+	 * @param n Номер элемента в последовательности.
+	 * @return Значение указанного элемента последовательности.
+	 */
+	private static BigInteger qfib (
+		final int n
+	) { // method body
+		return QFib.of(BigInteger.valueOf(n)).value();
+	} // qfib()
 
 // constructors
 
