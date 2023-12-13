@@ -319,3 +319,151 @@ f(2n-1) = f(n)^2 + f(n-1)^2; (5)
 
 (define (sqr x)
         (* x x))
+
+Реализация быстрого вычисления. Java.
+
+На Java, для повышения наглядности, вытесним реализацию элементов последовательности сочетающих пару из текущего и предшествующего значений, а так же функций удвоения и быстрого вычисления в отдельный класс. Кроме того, воспользовавшись тем, что у нас есть быстрый доступ ко всем двоичным разрядам номера требуемого элемента, мы, для уменьшения количества вычислений, будем не удваивать слагаемое, проходя по битам номера от младших к старшим, а наоборот - проходя от старших битов номера к младшим, будем удваивать значение аккумулятора, при необходимости продвигая его на единицу. Для пояснения, вспомним пример из рассмотренной задачи о быстром умножении, где мы умножали значение a на скаляр 140. Число 140 можно представить не только как сумму (128 + 8 + 4), но и в виде формулы (((1*16 + 1)*2 + 1)*4), что, при умножении на значение a даст нам (((a*16 + a)*2 + a)*4).
+
+Вспомогательный класс реализующий быстрое вычисление элементов последовательности Фибоначчи:
+
+package fibonacci;
+
+import java.math.BigInteger;
+
+/**
+ * Быстрое вычисление элементов последовательности Фибоначчи.
+ * <p>Экземпляры класса являются immutable-объектами представляющими элементы последовательности Фибоначчи. Каждый из таких объектов предоставляет методы, необходимые для реализации быстрого вычисления других элементов последовательности.</p>
+ * <p>Кроме того, класс предоставляет статический фабричный метод, реализующий алгоритм быстрого вычисления элементов последовательности.</p>
+ */
+public class QFib {
+
+// static fields
+
+	/**
+	 * Нулевой элемент последовательности.
+	 */
+	public static final QFib ZERO = new QFib(BigInteger.ZERO, BigInteger.ONE, BigInteger.ZERO);
+
+// instance fields
+
+	/**
+	 * Значение данного элемента последовательности.
+	 */
+	private final BigInteger cur;
+
+	/**
+	 * Значение предшествующего элемента последовательности.
+	 */
+	private final BigInteger prev;
+
+	/**
+	 * Номер данного элемента последовательности.
+	 */
+	private final BigInteger n;
+
+// static methods
+
+	/**
+	 * Получение элемента последовательности с заданным номером.
+	 * <p>Метод, реализуя алгоритм быстрого вычисления элементов последовательности Фибоначчи, находит и возвращает элемент с заданным номером.</p>
+	 * @param n Номер элемента в последовательности.
+	 * @return Элемент последовательности с заданным номером.
+	 * @throws NullPointerException Если указанный номер элемента не существует.
+	 */
+	public static QFib of (
+		final BigInteger n
+	) throws NullPointerException
+	{ // method body
+		QFib accum = ZERO;
+		final BigInteger absN = n.abs();
+		for (int i = absN.bitLength() - 1; i >= 0; i--) {
+			accum = accum.doubleN();
+			if (absN.testBit(i)) {
+				accum = accum.next();
+			} // if
+		} // for
+		if (n.signum() < 0) {
+			accum = accum.negateN();
+		} // if
+		return accum;
+	} // of()
+
+// constructors
+
+	/**
+	 * Конструктор элемента последовательности.
+	 * @param cur Значение данного элемента последовательности.
+	 * @param prev Значение предшествующего элемента последовательности.
+	 * @param n Номер данного элемента последовательности.
+	 * @throws AssertionError Если разрешены операторы контроля, и любой из аргументов не существует.
+	 */
+	private QFib (
+		final BigInteger cur,
+		final BigInteger prev,
+		final BigInteger n
+	) throws AssertionError
+	{ // method body
+		assert cur != null;
+		assert prev != null;
+		assert n != null;
+		this.cur = cur;
+		this.prev = prev;
+		this.n = n;
+	} // QFib()
+
+// instance methods
+
+	/**
+	 * Значение элемента.
+	 * <p>Метод возвращает значение данного элемента последовательности.</p>
+	 * @return Значение данного элемента.
+	 */
+	public BigInteger value (
+	) { // method body
+		return cur;
+	} // value()
+
+	/**
+	 * Следующий элемент последовательности.
+	 * @return Следующий элемент последовательности.
+	 */
+	public QFib next (
+	) { // method body
+		final BigInteger nextCur = cur.add(prev);
+		final BigInteger nextPrev = cur;
+		final BigInteger nextN = n.add(BigInteger.ONE);
+		return new QFib(nextCur, nextPrev, nextN);
+	} // next()
+
+	/**
+	 * Удвоение номера элемента.
+	 * <p>Метод возвращает элемент последовательности номер которого равен удвоенному номеру данного.</p>
+	 * @return Элемент с номером равным удвоенному номеру данного.
+	 */
+	public QFib doubleN (
+	) { // method body
+		final BigInteger doubleCur = cur.parallelMultiply(prev.add(prev).add(cur));
+		final BigInteger doublePrev = cur.parallelMultiply(cur).add(prev.parallelMultiply(prev));
+		final BigInteger doubleN = n.add(n);
+		return new QFib(doubleCur, doublePrev, doubleN);
+	} // doubleN()
+
+	/**
+	 * Смена знака номера.
+	 * <p>Метод возвращает элемент последовательности с номером равным по абсолютному значению, но противоположным по знаку номеру данного элемента.</p>
+	 * @return Элемент последовательности с номером противоположным по знаку.
+	 */
+	public QFib negateN (
+	) { // method body
+		BigInteger negCur = cur;
+		BigInteger negPrev = cur.add(prev);
+		if (n.testBit(0)) {
+			negPrev = negPrev.negate();
+		} else {
+			negCur = negCur.negate();
+		} // if
+		final BigInteger negN = n.negate();
+		return new QFib(negCur, negPrev, negN);
+	} // negateN()
+
+} // QFib
