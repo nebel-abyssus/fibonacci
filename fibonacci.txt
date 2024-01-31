@@ -34,11 +34,23 @@ import java.math.BigInteger;
  */
 public class Fibonacci {
 
+// static fields
+
+	/**
+	 * Полная форма опции печати.
+	 */
+	private static final String PRINT_OPTION_FULL_FORM = "--print";
+
+	/**
+	 * Короткая форма опции печати.
+	 */
+	private static final String PRINT_OPTION_SHORT_FORM = "-p";
+
 // static methods
 
 	/**
 	 * Точка входа в приложение.
-	 * <p>Метод, предполагая, что начальным аргументом запуска указан номер желаемого числа Фибоначчи, вычисляет и выводит его в стандартный вывод.</p>
+	 * <p>Метод, предполагая, что начальным аргументом запуска указан номер желаемого числа Фибоначчи, вычисляет это число и выводит в стандартный поток ошибок время его вычисления. Опционально, если вторым аргументом является строка {@value #PRINT_OPTION_FULL_FORM}, или {@value #PRINT_OPTION_SHORT_FORM} в стандартный поток выводится значение выбранного числа, а в поток ошибок дополнительно выводится время вывода числа. Значение числа выводится до вывода длительностей вычисления и вывода.</p>
 	 * @param args Набор аргументов запуска.
 	 * @throws NullPointerException Если набор аргументов запуска не существует.
 	 * @throws ArrayIndexOutOfBoundsException Если набор аргументов запуска пуст.
@@ -49,7 +61,25 @@ public class Fibonacci {
 		final String... args
 	) { // method body
 		final int n = Integer.parseInt(args[0]);
-		System.out.println(fib(n));
+		final boolean doPrint = (args.length > 1) && (args[1].equals(PRINT_OPTION_FULL_FORM) || args[1].equals(PRINT_OPTION_SHORT_FORM));
+		Instant start;
+		Instant finish;
+		final Duration calculationDuration;
+		Duration outputDuration = null;
+		start = Instant.now();
+		final BigInteger fibValue = fib(n);
+		finish = Instant.now();
+		calculationDuration = Duration.between(start, finish);
+		if (doPrint) {
+			start = Instant.now();
+			System.out.println(fibValue);
+			finish = Instant.now();
+			outputDuration = Duration.between(start, finish);
+		} // if
+		System.err.println(calculationDuration);
+		if (doPrint) {
+			System.err.println(outputDuration);
+		} // if
 	} // main()
 
 	/**
